@@ -78,6 +78,12 @@ join receives a list of strings and concatenates them. They can be delimited by 
 (join (list "Woot" "woot" "woot!") :separator ", ") ;; "Woot, woot, woot!"
 ```
 
+#### (replace-all string part replacement &key (ignore-case nil))
+replace-all returns a string with every instance of *part* replaced by *replacement* in *string*. ignore-case defaults to nil.
+```lisp
+(replace-all "Fo3sale: baby shoes, neve3worn" "3" "r ") ;; "For sale: baby shoes, never worn"
+```
+
 ## Contributing
 If you have any suggestions, bug reports, etc, please fill in an issue describing it. If you have the time and want to contribute, that is even better! Submit some tests too, let's try and keep the test coverage at 100%.
 
