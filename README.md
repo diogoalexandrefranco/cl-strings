@@ -45,13 +45,13 @@ format-number returns a string from a number. It's possible to set the precision
 (format-number 1234.326 :precision 2 :decimal-separator "," :order-separator " ") ;; "1 234,33"
 ```
 #### (starts-with string target &key (ignore-case nil))
-starts-with checks if *string* starts with *target*. The key argument ignore-case defaults to nil.
+starts-with checks if *string* starts with *target*. The key argument *ignore-case* defaults to nil.
 ```lisp
 (starts-with "fOo bar" "foo" :ignore-case t) ;; t
 ```
 
 #### (ends-with string target &key (ignore-case nil))
-ends-with checks if *string* ends with *target*. The key argument ignore-case defaults to nil.
+ends-with checks if *string* ends with *target*. The key argument *ignore-case* defaults to nil.
 ```lisp
 (ends-with "fOo bar" "bAr" :ignore-case t) ;; t
 ```
@@ -63,7 +63,7 @@ truncate returns a string consisting of *string* cut off to length *len*, and th
 ```
 
 #### (replace-all string part replacement &key (ignore-case nil))
-replace-all returns a string with every instance of *part* replaced by *replacement* in *string*. ignore-case defaults to nil.
+replace-all returns a string with every instance of *part* replaced by *replacement* in *string*. *ignore-case* defaults to nil.
 ```lisp
 (replace-all "Fo3sale: baby shoes, neve3worn" "3" "r ") ;; "For sale: baby shoes, never worn"
 ```
