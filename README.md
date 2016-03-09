@@ -34,7 +34,6 @@ NUM ;; -3100.0
 ## API
 #### (parse-number (number-str &key (decimal-separator #\\.) (order-separator nil)))
 parse-number returns a number from a string, without using the reader (CL has parse-integer but no equivalent for other number types). It accepts integers, floats, fractional and scientific notations. It also accepts both chars and one character strings for the separators. This method may throw *parse-error*.
-
 ```lisp
 (s:parse-number "-3.1e2") ;; -3100.0
 (s:parse-number "1 234,9" :decimal-separator "," :order-separator " ") ;; 1234.9
@@ -42,20 +41,17 @@ parse-number returns a number from a string, without using the reader (CL has pa
 
 #### (format-number number &key (precision 0) (decimal-separator ".") (order-separator ",")
 format-number returns a string from a number. It's possible to set the precision (decimals), and the separators as chars or strings of length one.
-
 ```lisp
 (format-number 1234.326 :precision 2 :decimal-separator "," :order-separator " ") ;; "1 234,33"
 ```
 #### (starts-with string target &key (ignore-case nil))
 starts-with checks if *string* starts with *target*. The key argument ignore-case defaults to nil.
-
 ```lisp
 (starts-with "fOo bar" "foo" :ignore-case t) ;; t
 ```
 
 #### (ends-with string target &key (ignore-case nil))
 ends-with checks if *string* ends with *target*. The key argument ignore-case defaults to nil.
-
 ```lisp
 (ends-with "fOo bar" "bAr" :ignore-case t) ;; t
 ```
@@ -66,10 +62,10 @@ truncate returns a string consisting of *string* cut off to length *len*, and th
 (truncate "and then the man bit the dog!" 8) ;; "and then..."
 ```
 
-#### (repeat string count &key (separator ""))
-repeat returns a string consisting of joining *string* with itself *count* number of times, with *separator* in between
+#### (replace-all string part replacement &key (ignore-case nil))
+replace-all returns a string with every instance of *part* replaced by *replacement* in *string*. ignore-case defaults to nil.
 ```lisp
-(repeat "clap" 3 :separator " ") ;; "clap clap clap"
+(replace-all "Fo3sale: baby shoes, neve3worn" "3" "r ") ;; "For sale: baby shoes, never worn"
 ```
 
 #### (join lst &key (separator ""))
@@ -78,11 +74,25 @@ join receives a list of strings and concatenates them. They can be delimited by 
 (join (list "Woot" "woot" "woot!") :separator ", ") ;; "Woot, woot, woot!"
 ```
 
-#### (replace-all string part replacement &key (ignore-case nil))
-replace-all returns a string with every instance of *part* replaced by *replacement* in *string*. ignore-case defaults to nil.
+#### (split string &optional separator &key (ignore-case nil))
+split retuns a list made up of *string* parts, delimited by *separator*. *separator* can be a char or any string. It defauls to a space.
 ```lisp
-(replace-all "Fo3sale: baby shoes, neve3worn" "3" "r ") ;; "For sale: baby shoes, never worn"
+(split "this, is, crazy" ", ") ; ("this" "is" "crazy")
 ```
+
+#### (repeat string count &key (separator ""))
+repeat returns a string consisting of joining *string* with itself *count* number of times, with *separator* in between
+```lisp
+(repeat "clap" 3 :separator " ") ;; "clap clap clap"
+```
+
+#### (chars string)
+chars returns a list with all the characters in a given *string*
+```lisp
+(chars "foo bar") ;; (#\f #\o #\o #\  #\b #\a #\r)
+```
+
+
 
 ## Contributing
 If you have any suggestions, bug reports, etc, please fill in an issue describing it. If you have the time and want to contribute, that is even better! Submit some tests too, let's try and keep the test coverage at 100%.
