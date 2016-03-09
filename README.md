@@ -56,6 +56,12 @@ ends-with checks if *string* ends with *target*. The key argument *ignore-case* 
 (ends-with "fOo bar" "bAr" :ignore-case t) ;; t
 ```
 
+#### (clean-diacretics string)
+clean-diacretics returns a string with the diacritical characters replaced by their closes counterparts.
+```list
+(clean-diacretics "Déjà vu") ;; "Deja vu"
+```
+
 #### (truncate string len &key (truncate-string "..."))
 truncate returns a string consisting of *string* cut off to length *len*, and then *truncate-string* (which defaults to "...") appended to it.
 ```lisp
@@ -80,6 +86,12 @@ split retuns a list made up of *string* parts, delimited by *separator*. *separa
 (split "this, is, crazy" ", ") ; ("this" "is" "crazy")
 ```
 
+#### (insert string original &key (position nil))
+insert returns a *original* with *string* inserted at *position*. If *position* is not provided, the insertion is performed at the end of *original*, meaning it is the same as setting *position* to the length of *original*
+```list
+(insert "each day holds " "The infinite possibilities should stagger the mind" :position 27) ;; "The infinite possibilities each day holds should stagger the mind"
+```
+
 #### (repeat string count &key (separator ""))
 repeat returns a string consisting of joining *string* with itself *count* number of times, with *separator* in between
 ```lisp
@@ -92,7 +104,23 @@ chars returns a list with all the characters in a given *string*
 (chars "foo bar") ;; (#\f #\o #\o #\  #\b #\a #\r)
 ```
 
+#### (chop string step)
+chop returns a list of parts of *string*, with *step* elements in each. If step is less than 1, no chop is performed.
+```lisp
+(chop "take wrong turns" 5) ;; ("take " "wrong" " turn" "s")
+```
 
+#### (toggle-case string)
+toggle-case returns a string with each character being the opposite case of the original ones.
+```lisp
+(toggle-case "oPEN uNMARKED dOORS") ;; "Open Unmarked Doors"
+```
+
+#### (clean string &key (char #\\space))
+clean removes *char* from the left and right sides of *string*, and replaces consecutive sequences of *char* by a single one.
+```lisp
+(clean "  foo   bar ") ;; "foo bar"
+```
 
 ## Contributing
 If you have any suggestions, bug reports, etc, please fill in an issue describing it. If you have the time and want to contribute, that is even better! Submit some tests too, let's try and keep the test coverage at 100%.
