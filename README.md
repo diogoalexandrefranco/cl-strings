@@ -1,5 +1,5 @@
 # cl-strings
-cl-strings is small, portable, dependency-free set of utilities for manipulating strings in Common Lisp.
+cl-strings is a small, portable, dependency-free set of utilities for manipulating strings in Common Lisp.
 
 * [How do i use it?](#how-do-i-use-it)
 * [Example](#example)
@@ -56,10 +56,10 @@ ends-with checks if *string* ends with *target*. The key argument *ignore-case* 
 (ends-with "fOo bar" "bAr" :ignore-case t) ;; t
 ```
 
-#### (clean-diacretics string)
-clean-diacretics returns a string with the diacritical characters replaced by their closes counterparts.
+#### (clean-diacritics string)
+clean-diacritics returns a string with the diacritical characters replaced by their closes counterparts.
 ```list
-(clean-diacretics "Déjà vu") ;; "Deja vu"
+(clean-diacritics "Déjà vu") ;; "Deja vu"
 ```
 
 #### (truncate string len &key (truncate-string "..."))
