@@ -220,8 +220,8 @@
         (* -1 (%parse-positive (subseq number-str 1) decimal-separator))
         (%parse-positive number-str decimal-separator))))
 
-(defun clean-diacretics (string)
-  "Returns a string with the diacretics replaced by their closest ASCII equivalents"
+(defun clean-diacritics (string)
+  "Returns a string with the diacritics replaced by their closest ASCII equivalents"
   (let ((from "ąàáäâãåæăćčĉęèéëêĝĥìíïîĵłľńňòóöőôõðøśșşšŝťțţŭùúüűûñÿýçżźžĄÀÁÄÂÃÅÆĂĆČĈĘÈÉËÊĜĤÌÍÏÎĴŁĽŃŇÒÓÖŐÔÕÐØŚȘŞŠŜŤȚŢŬÙÚÜŰÛÑŸÝÇŻŹŽ")
         (to "aaaaaaaaaccceeeeeghiiiijllnnoooooooossssstttuuuuuunyyczzzAAAAAAAAACCCEEEEEGHIIIIJLLNNOOOOOOOOSSSSSTTTUUUUUUNYYCZZZ"))
     (map 'string #'(lambda (x)

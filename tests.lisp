@@ -187,13 +187,13 @@
   (prove:is-error (s:parse-number "3 123,123" :order-separator " ") 'parse-error
     "Two different order separators not allowed"))
 
-(prove:subtest "clean-diacretics"
-  (prove:is (s:clean-diacretics "") "" "Empty string")
-  (prove:is (s:clean-diacretics "no diacretics") "no diacretics" "No diacretics")
-  (prove:is (s:clean-diacretics "Déjà vu") "Deja vu" "Clean multiple diacretics")
-  (prove:is (s:clean-diacretics "ÀÀÀÀÀÀÀhhh") "AAAAAAAhhh" "Upcase diacretics")
-  (prove:is-error (s:clean-diacretics 3) 'type-error "Not a string")
-  (prove:is (s:clean-diacretics nil) "" "Null argument"))
+(prove:subtest "clean-diacritics"
+  (prove:is (s:clean-diacritics "") "" "Empty string")
+  (prove:is (s:clean-diacritics "no diacritics") "no diacritics" "No diacritics")
+  (prove:is (s:clean-diacritics "Déjà vu") "Deja vu" "Clean multiple diacritics")
+  (prove:is (s:clean-diacritics "ÀÀÀÀÀÀÀhhh") "AAAAAAAhhh" "Upcase diacritics")
+  (prove:is-error (s:clean-diacritics 3) 'type-error "Not a string")
+  (prove:is (s:clean-diacritics nil) "" "Null argument"))
 
 (prove:subtest "clean"
   (prove:is (s:clean "") "" "Empty string")

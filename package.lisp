@@ -18,6 +18,6 @@
     #:toggle-case
     #:format-number
     #:parse-number
-    #:clean-diacretics
+    #:clean-diacritics
     #:clean
     #:insert))
