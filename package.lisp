@@ -20,4 +20,8 @@
     #:parse-number
     #:clean-diacritics
     #:clean
-    #:insert))
+    #:insert
+    #:camel-upper-case
+    #:camel-lower-case
+    #:snake-case
+    #:kebab-case))
