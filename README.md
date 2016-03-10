@@ -25,15 +25,15 @@ To ease typing, the cl-strings package also has the nickname "s".
 ```lisp
 > (ql:quickload :cl-strings)
 (:CL-STRINGS)
-> (defparmeter num (s:parse-number "-3.1e2"))
+> (defparameter *num* (s:parse-number "-3.1e2"))
 NUM ;; -3100.0
-> (s:format-number num :precision 3 :decimal-separator "." :order-separator ",")
+> (s:format-number *num* :precision 3 :decimal-separator "." :order-separator ",")
 "-3,100.000"
 ```
 
 ## API
 #### (parse-number number-str &key (decimal-separator #\\.) (order-separator nil))
-parse-number returns a number from a string, without using the reader (CL has parse-integer but no equivalent for other number types). It accepts integers, floats, fractional and scientific notations. It also accepts both chars and one character strings for the separators. This method may throw *parse-error*.
+parse-number returns a number from a string, without using the reader (CL has parse-integer but no equivalent for other number types). It accepts integers, floats, fractional and scientific notations. It also accepts both chars and one character strings for the separators. This method may signal *parse-error*.
 ```lisp
 (s:parse-number "-3.1e2") ;; -3100.0
 (s:parse-number "1 234,9" :decimal-separator "," :order-separator " ") ;; 1234.9
