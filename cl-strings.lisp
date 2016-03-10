@@ -263,3 +263,73 @@
     (write-string (subseq original 0 position) stream)
     (write-string string stream)
     (write-string (subseq original position) stream)))
+
+
+
+(defun camel-case (string &key (part " "))
+  "Returns a string wich concatenate every word separated by a space(or a specified delimiter), and uppercase every first letter of those words except for the first word of the string. "
+  (check-type string string)
+  (check-type part string)
+  
+  (if (eq (length string) 0)
+    ""
+    (let ((list-of-words (split 
+			  (string-trim 
+			   '(#\Space #\Newline #\Backspace #\Tab 
+			     #\Linefeed #\Page #\Return #\Rubout)
+			   string) part)))
+      (if (< (length list-of-words) 2)
+	(string-trim 
+	 '(#\Space #\Newline #\Backspace #\Tab 
+	   #\Linefeed #\Page #\Return #\Rubout)
+	 string)
+	(with-output-to-string (stream)
+	  (write-string (elt list-of-words 0) stream)
+	  (write-string (join  (map 
+				'list 
+				(lambda (e)
+				  (if (< (length e) 1)
+				      ""
+				      (concatenate 
+				       'string 
+				       (string (char-upcase (char e 0))) 
+				       (subseq e 1))))
+				  (subseq list-of-words 1))) stream))))))
+
+
+(defun snake-case (string &key (part " "))
+  "Returns a string with every space (or a char specified) replaced by an underscore"
+  (check-type string string)
+  (check-type part string)
+  (if (eq (length string) 0)
+    ""
+    (let ((list-of-words (split (string-trim 
+				 '(#\Space #\Newline #\Backspace #\Tab 
+				   #\Linefeed #\Page #\Return #\Rubout)
+				 string) part)))
+      (if (< (length list-of-words) 2)
+	(string-trim 
+	 '(#\Space #\Newline #\Backspace #\Tab 
+	   #\Linefeed #\Page #\Return #\Rubout)
+	 string)
+	(with-output-to-string (stream)
+	  (write-string (elt list-of-words 0) stream)
+	  (write-string (join  (map 
+				'list 
+				(lambda (e)
+				  (if (< (length e) 1)
+				      ""
+				      (concatenate 
+				       'string 
+				       "_"
+				       (string (char-downcase (char e 0))) 
+				       (subseq e 1))))
+				  (subseq list-of-words 1))) stream))))))
+
+  
+(defun kebab-case (string &key (part " "))
+  "Returns a string with every space (or a char specified) replaced by an hyphen"
+  (check-type string string)
+  (check-type part string)
+  (string-downcase (replace-all string part "-")))
+
