@@ -25,7 +25,7 @@ To ease typing, the cl-strings package also has the nickname "s".
 ```lisp
 > (ql:quickload :cl-strings)
 (:CL-STRINGS)
-> (defparameter *num* (s:parse-number "-3.1e2"))
+> (defparameter *num* (s:parse-number "-3.1e3"))
 NUM ;; -3100.0
 > (s:format-number *num* :precision 3 :decimal-separator "." :order-separator ",")
 "-3,100.000"
