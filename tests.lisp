@@ -1,4 +1,4 @@
-(prove:plan 15)
+(prove:plan 18)
 
 (prove:subtest "ends-with"
   (prove:ok (s:ends-with "1" "1" :ignore-case t) "equal strings")
@@ -221,5 +221,35 @@
   (prove:is-error (s:insert "foo" 3 :position 0) 'type-error "Original not a string")
   (prove:is-error (s:insert " bar" "foo" :position 10) 'simple-type-error "Out of bounds")
   (prove:is-error (s:insert nil "foo" :position 0) 'type-error "Insert nil"))
+
+(prove:subtest "camel-case"
+  (prove:is (s:camel-case "the man bit the dog") "theManBitTheDog" "Simple case")
+  (prove:is (s:camel-case "") "" "Empty string")
+  (prove:is (s:camel-case "the") "the" "Only one word lowercase")
+  (prove:is (s:camel-case "the ") "the" "Only one word and space")
+  (prove:is (s:camel-case " the") "the" "One space followed by a word")
+  (prove:is (s:camel-case "The man bit the dog") "TheManBitTheDog" "Already an uppercase letter")
+  (prove:is (s:camel-case "893") "893" "String starting with numericals char")
+  (prove:is (s:camel-case "The man bit the dog" :delimiter "e ") "ThMan bit thDog" "With a specified delimiter")
+  (prove:is-error (s:camel-case 893) 'simple-type-error "Not a string")
+  (prove:is-error (s:camel-case "11" :delimiter 21) 'simple-type-error "Not a string"))
+
+(prove:subtest "snake-case"
+  (prove:is (s:snake-case "the man bit the dog") "the_man_bit_the_dog" "Simple case")
+  (prove:is (s:snake-case "") "" "Empty string")
+  (prove:is (s:snake-case "the") "the" "Only on word")
+  (prove:is (s:snake-case " the") "the" "Leading white space")
+  (prove:is (s:snake-case "the ") "the" "Trailing white space")
+  (prove:is (s:snake-case "The man bit The dog" :delimiter "e ") "Th_man bit th_dog" "Replacing more than one char")
+  (prove:is-error (s:snake-case 893) 'simple-type-error "First arg not a string")
+  (prove:is-error (s:snake-case "The man bit the dog" :delimiter 21) 'type-error "Second arg not a string"))
+
+(prove:subtest "kebab-case"
+  (prove:is (s:kebab-case "the man bit the dog") "the-man-bit-the-dog" "Simple case")
+  (prove:is (s:kebab-case "") "" "Empty string")
+  (prove:is (s:kebab-case "The man bit the dog" :delimiter "e ") "th-man bit th-dog" "Replacing more than one char")
+  (prove:is (s:kebab-case "THE man BIT the DOG") "the-man-bit-the-dog" "Uppercase in the string")
+  (prove:is-error (s:kebab-case 893) 'simple-type-error "First arg not a string")
+  (prove:is-error (s:kebab-case "The man bit the dog" :delimiter 21) 'type-error "Second arg not a string"))
 
 (prove:finalize)

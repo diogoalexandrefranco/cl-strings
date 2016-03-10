@@ -1,5 +1,8 @@
 (in-package :cl-strings)
 
+(defvar *blank-chars* '(#\Space #\Newline #\Backspace #\Tab
+                        #\Linefeed #\Page #\Return #\Rubout))
+
 (defun starts-with (string target &key (ignore-case nil))
   "Returns true if \"string\"'s first characters are equal to \"target\"."
   (let ((target-len (length target))
@@ -263,3 +266,48 @@
     (write-string (subseq original 0 position) stream)
     (write-string string stream)
     (write-string (subseq original position) stream)))
+
+(defun camel-case (string &key (delimiter #\space))
+  "Returns a string which concatenates every word separated by a space
+  (or a specified delimiter), and upcases every first letter
+  except for the first word of the string."
+  (check-type string string)
+  (unless (or (characterp delimiter) (stringp delimiter))
+    (error (make-condition 'simple-type-error)))
+  (let ((words (split (string-trim *blank-chars* string) delimiter)))
+    (with-output-to-string (stream)
+      (unless (= (length (first words)) 0)
+        (write-char (char (first words) 0) stream)
+        (write-string (string-downcase (subseq (first words) 1)) stream))
+      (loop for word in (rest words) do
+        (unless (= (length (first words)) 0)
+          (write-char (char-upcase (char word 0)) stream)
+          (write-string (string-downcase (subseq word 1)) stream))))))
+
+(defun snake-case (string &key (delimiter #\space))
+  "Returns a string with every space (or a specified delimiter)
+  replaced by an underscore, and downcased, except for the first letter."
+  (check-type string string)
+  (unless (or (characterp delimiter) (stringp delimiter))
+    (error (make-condition 'simple-type-error)))
+  (let ((words (split (string-trim *blank-chars* string) delimiter)))
+    (with-output-to-string (stream)
+      (unless (= (length (first words)) 0)
+        (write-char (char (first words) 0) stream)
+        (write-string (string-downcase (subseq (first words) 1)) stream))
+      (loop for word in (rest words) do
+        (unless (= (length (first words)) 0)
+          (write-char #\_ stream)
+          (write-string (string-downcase word) stream))))))
+
+(defun kebab-case (string &key (delimiter #\space))
+  "Returns a string with every space (or a specified char)
+  replaced by an hyphen, and every character lower cased."
+  (check-type string string)
+  (unless (or (characterp delimiter) (stringp delimiter))
+    (error (make-condition 'simple-type-error)))
+  (string-downcase
+    (replace-all string (if (stringp delimiter)
+                            delimiter
+                            (string delimiter))
+                        "-")))
