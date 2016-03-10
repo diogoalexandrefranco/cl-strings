@@ -227,7 +227,7 @@
   (prove:is (s:camel-case "") "" "Empty string")
   (prove:is (s:camel-case "the") "the" "Only one word lowercase")
   (prove:is (s:camel-case "the ") "the" "Only one word and space")
-  (prove:is (s:camel-case " the") "The" "One space followed by a word")
+  (prove:is (s:camel-case " the") "the" "One space followed by a word")
   (prove:is (s:camel-case "The man bit the dog") "TheManBitTheDog" "Already an uppercase letter")
   (prove:is (s:camel-case "893") "893" "String starting with numericals char")
   (prove:is (s:camel-case "The man bit the dog" :part "e ") "ThMan bit thDog" "With a specified delimiter")
@@ -238,7 +238,10 @@
 (prove:subtest "snake-case"
   (prove:is (s:snake-case "the man bit the dog") "the_man_bit_the_dog" "Simple case")
   (prove:is (s:snake-case "") "" "Empty string")
-  (prove:is (s:snake-case "The man bit the dog" :part "e ") "Th_man bit th_dog" "Replacing more than one char")
+  (prove:is (s:snake-case "the") "the" "Only on word")
+  (prove:is (s:snake-case " the") "the" "Leading white space")
+  (prove:is (s:snake-case "the ") "the" "Trailing white space")
+  (prove:is (s:snake-case "The man bit The dog" :part "e ") "Th_man bit Th_dog" "Replacing more than one char")
   (prove:is-error (s:snake-case 893) 'simple-type-error "First arg not a string")
   (prove:is-error (s:snake-case "The man bit the dog" :part 21) 'type-error "Second arg not a string"))
 
