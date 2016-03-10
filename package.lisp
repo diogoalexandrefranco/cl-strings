@@ -22,6 +22,5 @@
     #:clean
     #:insert
     #:camel-upper-case
-    #:camel-lower-case
     #:snake-case
     #:kebab-case))

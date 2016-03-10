@@ -246,7 +246,8 @@
 (prove:subtest "kebab-case"
   (prove:is (s:kebab-case "the man bit the dog") "the-man-bit-the-dog" "Simple case")
   (prove:is (s:kebab-case "") "" "Empty string")
-  (prove:is (s:kebab-case "The man bit the dog" :part "e ") "Th-man bit th-dog" "Replacing more than one char")
+  (prove:is (s:kebab-case "The man bit the dog" :part "e ") "th-man bit th-dog" "Replacing more than one char")
+  (prove:is (s:kebab-case "THE man BIT the DOG") "the-man-bit-the-dog" "Uppercase in the string")
   (prove:is-error (s:kebab-case 893) 'simple-type-error "First arg not a string")
   (prove:is-error (s:kebab-case "The man bit the dog" :part 21) 'type-error "Second arg not a string"))
 

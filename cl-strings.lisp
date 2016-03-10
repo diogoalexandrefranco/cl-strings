@@ -275,18 +275,8 @@
 	(write-char (char-upcase (char string 0)) stream)
 	(write-string (subseq string 1) stream))))
 
-
-(defun camel-lower-case (string)
-  "Returns a string with the first letter changed to an lowercase letter"
-  (check-type string string)
-  (if (eq (length string) 0)
-      ""
-      (with-output-to-string (stream)
-	(write-char (char-downcase (char string 0)) stream)
-	(write-string (subseq string 1) stream))))
-  
 (defun snake-case (string &key (part " "))
-  "Returns a string with every space (or a char specified) replaced by an nderscore"
+  "Returns a string with every space (or a char specified) replaced by an underscore"
   (check-type string string)
   (check-type part string)
   (replace-all string part "_")) 
@@ -295,4 +285,4 @@
   "Returns a string with every space (or a char specified) replaced by an hyphen"
   (check-type string string)
   (check-type part string)
-  (replace-all string part "-"))
+  (string-downcase (replace-all string part "-")))
