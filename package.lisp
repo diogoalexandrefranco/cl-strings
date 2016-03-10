@@ -21,6 +21,6 @@
     #:clean-diacritics
     #:clean
     #:insert
-    #:camel-upper-case
+    #:camel-case
     #:snake-case
     #:kebab-case))

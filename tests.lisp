@@ -1,4 +1,4 @@
-(prove:plan 19)
+(prove:plan 18)
 
 (prove:subtest "ends-with"
   (prove:ok (s:ends-with "1" "1" :ignore-case t) "equal strings")
@@ -222,19 +222,18 @@
   (prove:is-error (s:insert " bar" "foo" :position 10) 'simple-type-error "Out of bounds")
   (prove:is-error (s:insert nil "foo" :position 0) 'type-error "Insert nil"))
 
-(prove:subtest "camel-upper-case"
-  (prove:is (s:camel-upper-case "the man bit the dog") "The man bit the dog" "Simple case")
-  (prove:is (s:camel-upper-case "") "" "Empty string")
-  (prove:is (s:camel-upper-case "The man bit the dog") "The man bit the dog" "Already an uppercase letter")
-  (prove:is (s:camel-upper-case "893") "893" "String starting with numericals char")
-  (prove:is-error (s:camel-upper-case 893) 'simple-type-error "Not a string"))
+(prove:subtest "camel-case"
+  (prove:is (s:camel-case "the man bit the dog") "theManBitTheDog" "Simple case")
+  (prove:is (s:camel-case "") "" "Empty string")
+  (prove:is (s:camel-case "the") "the" "Only one word lowercase")
+  (prove:is (s:camel-case "the ") "the" "Only one word and space")
+  (prove:is (s:camel-case " the") "The" "One space followed by a word")
+  (prove:is (s:camel-case "The man bit the dog") "TheManBitTheDog" "Already an uppercase letter")
+  (prove:is (s:camel-case "893") "893" "String starting with numericals char")
+  (prove:is (s:camel-case "The man bit the dog" :part "e ") "ThMan bit thDog" "With a specified delimiter")
+  (prove:is-error (s:camel-case 893) 'simple-type-error "Not a string")
+  (prove:is-error (s:camel-case "11" :part 21) 'simple-type-error "Not a string"))
 
-(prove:subtest "camel-lower-case"
-  (prove:is (s:camel-lower-case "The man bit the dog") "the man bit the dog" "Simple case")
-  (prove:is (s:camel-lower-case "") "" "Empty string")
-  (prove:is (s:camel-lower-case "the man bit the dog") "the man bit the dog" "Already an lowercase letter")
-  (prove:is (s:camel-lower-case "893") "893" "String starting with numericals char")
-  (prove:is-error (s:camel-lower-case 893) 'simple-type-error "Not a string"))
 
 (prove:subtest "snake-case"
   (prove:is (s:snake-case "the man bit the dog") "the_man_bit_the_dog" "Simple case")
