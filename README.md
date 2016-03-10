@@ -26,7 +26,7 @@ To ease typing, the cl-strings package also has the nickname "s".
 > (ql:quickload :cl-strings)
 (:CL-STRINGS)
 > (defparameter *num* (s:parse-number "-3.1e3"))
-NUM ;; -3100.0
+*NUM* ;; -3100.0
 > (s:format-number *num* :precision 3 :decimal-separator "." :order-separator ",")
 "-3,100.000"
 ```
@@ -81,7 +81,9 @@ join receives a list of strings and concatenates them. They can be delimited by 
 ```
 
 #### (split string &optional separator &key (ignore-case nil))
-split returns a list made up of *string* parts, delimited by *separator*. *separator* can be a char or any string. It defaults to a space.
+split returns a list made up of *string* parts, delimited by *separator*. *separator* can be a char or any string. It defaults to a space.  
+Note: Two consecutive separators will be seen as
+if there was an empty string between them.
 ```lisp
 (split "this, is, crazy" ", ") ; ("this" "is" "crazy")
 ```
