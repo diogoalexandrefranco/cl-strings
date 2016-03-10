@@ -81,7 +81,7 @@ join receives a list of strings and concatenates them. They can be delimited by 
 ```
 
 #### (split string &optional separator &key (ignore-case nil))
-split retuns a list made up of *string* parts, delimited by *separator*. *separator* can be a char or any string. It defauls to a space.
+split returns a list made up of *string* parts, delimited by *separator*. *separator* can be a char or any string. It defaults to a space.
 ```lisp
 (split "this, is, crazy" ", ") ; ("this" "is" "crazy")
 ```
@@ -122,12 +122,29 @@ clean removes *char* from the left and right sides of *string*, and replaces con
 (clean "  foo   bar ") ;; "foo bar"
 ```
 
+#### (camel-case string &key (delimiter #\\space))
+camel-case leaves the case of the first character of *string* as is. The rest of the words are concatenated and the first letter of each is upcased. Word separation defaults to a space but can be customized by *delimiter*.
+```lisp
+(camel-case "hello worLD") ;; "helloWorld"
+```
+
+#### (kebab-case string &key (delimiter #\\space))
+kebab-case downcases *string* and joins every word by an hyphen. Word separation defaults to space but can be customized by *delimiter*.
+```lisp
+(kebab-case "hello worLD") ;; "hello-world"
+```
+
+#### (snake-case string &key (delimiter #\\space))
+snake-case leaves the case of the first character of *string* as is. The rest of the words are lowercased and joined by an underscore. Word separation defaults to space but can be customized by *delimiter*.
+```lisp
+(snake-case "hello worLD") ;; "hello_world"
+```
+
 ## Contributing
 If you have any suggestions, bug reports, etc, please fill in an issue describing it. If you have the time and want to contribute, that is even better! Submit some tests too, let's try and keep the test coverage at 100%.
 
-Here is what i'm thinking might make sense to implement next:
+Here is what I'm thinking might make sense to implement next:
 - url-encode / url-decode
-- strings to camel-case / kebab-case / snake-case
 - CL specific sanitization / escaping
 - String distance measures (Levenshtein, etc.)
 
