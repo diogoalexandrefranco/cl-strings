@@ -25,9 +25,11 @@ To ease typing, the cl-strings package also has the nickname "s".
 ```lisp
 > (ql:quickload :cl-strings)
 (:CL-STRINGS)
-> (defparameter *num* (s:parse-number "-3.1e3"))
+> (use-package :cl-strings)
+T
+> (defparameter *num* (parse-number "-3.1e3"))
 *NUM* ;; -3100.0
-> (s:format-number *num* :precision 3 :decimal-separator "." :order-separator ",")
+> (format-number *num* :precision 3 :decimal-separator "." :order-separator ",")
 "-3,100.000"
 ```
 
@@ -35,8 +37,8 @@ To ease typing, the cl-strings package also has the nickname "s".
 #### (parse-number number-str &key (decimal-separator #\\.) (order-separator nil))
 parse-number returns a number from a string, without using the reader (CL has parse-integer but no equivalent for other number types). It accepts integers, floats, fractional and scientific notations. It also accepts both chars and one character strings for the separators. This method may signal *parse-error*.
 ```lisp
-(s:parse-number "-3.1e2") ;; -3100.0
-(s:parse-number "1 234,9" :decimal-separator "," :order-separator " ") ;; 1234.9
+(parse-number "-3.1e2") ;; -3100.0
+(parse-number "1 234,9" :decimal-separator "," :order-separator " ") ;; 1234.9
 ```
 
 #### (format-number number &key (precision 0) (decimal-separator ".") (order-separator ",")
@@ -62,10 +64,10 @@ clean-diacritics returns a string with the diacritical characters replaced by th
 (clean-diacritics "Déjà vu") ;; "Deja vu"
 ```
 
-#### (truncate string len &key (truncate-string "..."))
-truncate returns a string consisting of *string* cut off to length *len*, and then *truncate-string* (which defaults to "...") appended to it.
+#### (shorten string len &key (truncate-string "..."))
+shorten returns a string consisting of *string* cut off to length *len*, and then *truncate-string* (which defaults to "..." but can be nil or "") appended to it.
 ```lisp
-(truncate "and then the man bit the dog!" 8) ;; "and then..."
+(shorten "and then the man bit the dog!" 8) ;; "and then..."
 ```
 
 #### (replace-all string part replacement &key (ignore-case nil))
@@ -91,7 +93,8 @@ if there was an empty string between them.
 #### (insert string original &key (position nil))
 insert returns a *original* with *string* inserted at *position*. If *position* is not provided, the insertion is performed at the end of *original*, meaning it is the same as setting *position* to the length of *original*
 ```list
-(insert "each day holds " "The infinite possibilities should stagger the mind" :position 27) ;; "The infinite possibilities each day holds should stagger the mind"
+(insert "each day holds " "The infinite possibilities should stagger the mind" :position 27)
+;; "The infinite possibilities each day holds should stagger the mind"
 ```
 
 #### (repeat string count &key (separator ""))

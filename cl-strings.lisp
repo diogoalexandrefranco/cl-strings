@@ -19,15 +19,15 @@
       (funcall (if ignore-case #'string-equal #'string=)
                string target :start1 (- string-len target-len)))))
 
-(defun truncate (string len &key (truncate-string "..."))
+(defun shorten (string len &key (truncate-string "..."))
   "If \"string\"'s length is bigger than \"length\", cut the last
-  characters out. Also replaces the last characters of the truncated
+  characters out. Also replaces the last characters of the shortened
   string for the omission string. It defaults to \"...\", but can be
   nil or the empty string."
   (let ((string-len (length string)))
 
     (if (<= string-len len)
-      (return-from truncate string))
+      (return-from shorten string))
 
     (concatenate 'string (subseq string 0 len)
                  truncate-string)))

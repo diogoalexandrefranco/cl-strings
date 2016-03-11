@@ -2,13 +2,11 @@
 
 (defpackage :cl-strings
   (:use :common-lisp)
-  (:nicknames :s)
-  (:shadow
-    #:truncate)
+  (:shadow)
   (:export
     #:starts-with
     #:ends-with
-    #:truncate
+    #:shorten
     #:repeat
     #:join
     #:replace-all
