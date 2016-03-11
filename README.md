@@ -37,7 +37,7 @@ T
 #### (parse-number number-str &key (decimal-separator #\\.) (order-separator nil))
 parse-number returns a number from a string, without using the reader (CL has parse-integer but no equivalent for other number types). It accepts integers, floats, fractional and scientific notations. It also accepts both chars and one character strings for the separators. This method may signal *parse-error*.
 ```lisp
-(parse-number "-3.1e2") ;; -3100.0
+(parse-number "-3.1e2") ;; -310.0
 (parse-number "1 234,9" :decimal-separator "," :order-separator " ") ;; 1234.9
 ```
 
