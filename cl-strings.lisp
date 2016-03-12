@@ -81,7 +81,7 @@
   (loop for c across string
     collect c))
 
-(defun split (string &optional separator &key (ignore-case nil))
+(defun split (string &optional (separator #\space) &key (ignore-case nil))
   "Returns a list of substrings of string
   divided by separator. Separator can be a string or
   a character.
@@ -102,9 +102,7 @@
                    collect (subseq string i j)
                    while j)))
       (check-type string string)
-      (cond ((null separator)
-             (%split-by-char string #\space))
-            ((typep separator 'character)
+      (cond ((typep separator 'character)
              (%split-by-char string separator))
             ((string= separator "") (chars string))
             ((typep separator 'string)
@@ -120,7 +118,7 @@
   (if (> step 0)
     (let ((string-len (length string)))
       (loop for i = 0 then (+ i step)
-          for j = step then (+ j step)
+            for j = step then (+ j step)
           collect (subseq string i (if (> j string-len)
                                     string-len
                                     j))
