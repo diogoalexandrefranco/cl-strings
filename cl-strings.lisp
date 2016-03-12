@@ -250,22 +250,19 @@
               (if char-found (setf char-found nil))
               (write-char c stream)))))))
 
-(defun insert (string original &key (position nil))
+(defun insert (string original &key (position (length original)))
   "Returns a string consisting of \"original\" with \"string\" inserted
   at \"position\"."
   (check-type original string)
   (check-type string string)
-  (if (null position)
-      (setq position (length original))
-      (progn
-        (check-type position number)
-        (when (not (<= 0 position (length original)))
-          (error (make-condition 'simple-type-error :format-control
-                  "position out of bounds.")))))
-  (with-output-to-string (stream)
-    (write-string (subseq original 0 position) stream)
-    (write-string string stream)
-    (write-string (subseq original position) stream)))
+  (check-type position number)
+  (when (not (<= 0 position (length original)))
+    (error (make-condition 'simple-type-error :format-control
+            "position out of bounds.")))
+
+  (concatenate 'string (subseq original 0 position)
+                       string
+                       (subseq original position)))
 
 (defun camel-case (string &key (delimiter #\space))
   "Returns a string which concatenates every word separated by a space
