@@ -144,10 +144,10 @@
   (prove:is (format-number -3.419 :precision 5) "-3.41900" "Precision 5, negative")
   (prove:is (format-number -3.419 :precision 5 :decimal-separator "!") "-3!41900"
     "Custom decimal separator")
-  (prove:is (format-number 3419.25 :precision 2) "3,419.25" "Default delimiters")
-  (prove:is (format-number 3419.25 :precision 1 :order-separator #\.) "3.419.3"
+  (prove:is (format-number 3419.26 :precision 2) "3,419.26" "Default delimiters")
+  (prove:is (format-number 3419.26 :precision 1 :order-separator #\.) "3.419.3"
     "Custom order separator as char")
-  (prove:is (format-number 3419.25 :precision 1 :order-separator ".") "3.419.3"
+  (prove:is (format-number 3419.26 :precision 1 :order-separator ".") "3.419.3"
     "Custom order separator as string")
   (prove:is-error (format-number "3419") 'type-error "Number must be a number")
   (prove:is-error (format-number 3419.25 :precision -3) 'simple-error
@@ -221,7 +221,7 @@
   (prove:is (insert "foo" "" :position 0) "foo" "Insert into empty string")
   (prove:is (insert "foo" "") "foo" "Into empty string with default pos")
   (prove:is-error (insert "foo" 3 :position 0) 'type-error "Original not a string")
-  (prove:is-error (insert " bar" "foo" :position 10) 'simple-type-error "Out of bounds")
+  (prove:is-error (insert " bar" "foo" :position 10) 'type-error "Out of bounds")
   (prove:is-error (insert nil "foo" :position 0) 'type-error "Insert nil"))
 
 (prove:subtest "camel-case"
@@ -233,7 +233,7 @@
   (prove:is (camel-case "The man bit the dog") "TheManBitTheDog" "Already an uppercase letter")
   (prove:is (camel-case "893") "893" "String starting with numericals char")
   (prove:is (camel-case "The man bit the dog" :delimiter "e ") "ThMan bit thDog" "With a specified delimiter")
-  (prove:is-error (camel-case 893) 'simple-type-error "Not a string")
+  (prove:is-error (camel-case 893) 'type-error "Not a string")
   (prove:is-error (camel-case "11" :delimiter 21) 'simple-type-error "Not a string"))
 
 (prove:subtest "snake-case"
@@ -243,7 +243,7 @@
   (prove:is (snake-case " the") "the" "Leading white space")
   (prove:is (snake-case "the ") "the" "Trailing white space")
   (prove:is (snake-case "The man bit The dog" :delimiter "e ") "Th_man bit th_dog" "Replacing more than one char")
-  (prove:is-error (snake-case 893) 'simple-type-error "First arg not a string")
+  (prove:is-error (snake-case 893) 'type-error "First arg not a string")
   (prove:is-error (snake-case "The man bit the dog" :delimiter 21) 'type-error "Second arg not a string"))
 
 (prove:subtest "kebab-case"
@@ -251,7 +251,7 @@
   (prove:is (kebab-case "") "" "Empty string")
   (prove:is (kebab-case "The man bit the dog" :delimiter "e ") "th-man bit th-dog" "Replacing more than one char")
   (prove:is (kebab-case "THE man BIT the DOG") "the-man-bit-the-dog" "Uppercase in the string")
-  (prove:is-error (kebab-case 893) 'simple-type-error "First arg not a string")
+  (prove:is-error (kebab-case 893) 'type-error "First arg not a string")
   (prove:is-error (kebab-case "The man bit the dog" :delimiter 21) 'type-error "Second arg not a string"))
 
 (prove:finalize)
