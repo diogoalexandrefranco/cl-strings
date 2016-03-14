@@ -1,6 +1,6 @@
 # cl-strings
 cl-strings is a small, portable, dependency-free set of utilities to ease string manipulation in Common Lisp.  
-It has 100% test coverage and works at least on sbcl, ccl, abcl, ecl and clisp.
+It has 100% test coverage and works at least on sbcl, ecl, ccl and abcl.
 
 * [How do i use it?](#how-do-i-use-it)
 * [Example](#example)
