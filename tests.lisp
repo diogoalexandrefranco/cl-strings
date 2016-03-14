@@ -1,6 +1,6 @@
 (in-package :cl-strings)
 
-(prove:plan 18)
+(prove:plan 19)
 
 (prove:subtest "ends-with"
   (prove:ok (ends-with "1" "1" :ignore-case t) "equal strings")
@@ -254,4 +254,56 @@
   (prove:is-error (kebab-case 893) 'type-error "First arg not a string")
   (prove:is-error (kebab-case "The man bit the dog" :delimiter 21) 'type-error "Second arg not a string"))
 
+(prove:subtest "make-template-parser"
+  (prove:is (funcall (make-template-parser "{{" "}}")
+                     "Hello {{name}}, welcome to {{website}}!"
+                     '(("name" . "Sam") ("website" . "cl-strings")))
+            "Hello Sam, welcome to cl-strings!"
+            "Normal case")
+  (prove:is (funcall (make-template-parser "<" ">")
+                     "<Hello> <name>, welcome to <website><>!"
+                     '(("name" . "Sam") ("website" . "cl-strings")))
+            "<Hello> Sam, welcome to cl-strings<>!"
+            "Whith unknown variables")
+  (prove:is (funcall (make-template-parser "<" ">")
+                     "<Hello> <name>, welcome to <website><>!"
+                     '(("name" . "Sam") ("Website" . "cl-strings")))
+            "<Hello> Sam, welcome to <website><>!"
+            "Different case on a variable name")
+  (prove:is (funcall (make-template-parser "<" ">" :ignore-case t)
+                     "<Hello> <name>, welcome to <website><>!"
+                     '(("name" . "Sam") ("Website" . "cl-strings")))
+            "<Hello> Sam, welcome to cl-strings<>!"
+            "Ignore case -> true")
+  (prove:is (funcall (make-template-parser "<" ">" :ignore-case t)
+                     "<Hello> <na<me>, welcome to <website><>!"
+                     '(("na<me" . "Sam") ("Website" . "cl-strings")))
+            "<Hello> Sam, welcome to cl-strings<>!"
+            "With open separator in the middle")
+  (prove:is (funcall (make-template-parser "<" ">" :ignore-case t)
+                     "<Hello> <na>me>, welcome to <website><>!"
+                     '(("na" . "Sam") ("Website" . "cl-strings")))
+            "<Hello> Samme>, welcome to cl-strings<>!"
+            "With two close separators")
+  (prove:is (funcall (make-template-parser "$${{" "}}")
+                     "$${{Hello}} $${{name}}, welcome to $${{website}}}}!"
+                     '(("name" . "Sam") ("website" . "cl-strings")))
+            "$${{Hello}} Sam, welcome to cl-strings}}!"
+            "With different lengths and extra close tag")
+  (prove:is-error (funcall (make-template-parser "" "")
+                     "$${{Hello}} $${{name}}, welcome to $${{website}}}}!"
+                     '(("name" . "Sam") ("website" . "cl-strings")))
+            'type-error "Empty strings in template delimiters")
+  (prove:is-error (funcall (make-template-parser 3 4)
+                     "$${{Hello}} $${{name}}, welcome to $${{website}}}}!"
+                     '(("name" . "Sam") ("website" . "cl-strings")))
+            'type-error "Bad types in template delimiters")
+  (prove:is (funcall (make-template-parser "{{" "}}")
+                     ""
+                     '(("name" . "Sam") ("website" . "cl-strings")))
+            "" "Empty string")
+  (prove:is-error (funcall (make-template-parser "{{" "}}")
+                     45 '(("name" . "Sam") ("website" . "cl-strings")))
+            'type-error "Bad type on string"))
+            
 (prove:finalize)

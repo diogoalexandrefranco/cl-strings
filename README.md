@@ -47,6 +47,14 @@ format-number returns a string from a number. It's possible to set the precision
 ```lisp
 (format-number 1234.326 :precision 2 :decimal-separator "," :order-separator " ") ;; "1 234,33"
 ```
+
+#### (make-template-parser start-delimiter end-delimiter &key (ignore-case nil))
+make-template-parser returns a function (a closure actually) that can substitute known variables for their values. *start-delimiter* and *end-delimiter* define the template tags. *ignore-case* defaults to nil and can be set to change the way the returned function tests variable names. The argument list of the returned lambda is **(string values)** where *string* is the template and *values* is an association list. It is easier by example:
+```lisp
+(defvar *my-parser* (make-template-parser "{{" "}}")) ;; closure
+(funcall *my-parser* "Hello {{name}}!" '(("name" . "Sam"))) ;; "Hello Sam!"
+```
+
 #### (starts-with string target &key (ignore-case nil))
 starts-with checks if *string* starts with *target*. The key argument *ignore-case* defaults to nil.
 ```lisp

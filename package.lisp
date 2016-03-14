@@ -22,4 +22,5 @@
     #:insert
     #:camel-case
     #:snake-case
-    #:kebab-case))
+    #:kebab-case
+    #:make-template-parser))
