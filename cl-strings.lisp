@@ -312,17 +312,26 @@
                             (string delimiter))
                         "-")))
 
-(defun template-parser (start-delimiter end-delimiter &key (ignore-case nil))
+(defun make-template-parser (start-delimiter end-delimiter &key (ignore-case nil))
   "Returns a closure than can substitute variables
   delimited by \"start-delimiter\" and \"end-delimiter\"
   in a string, but the provided values."
+  (check-type start-delimiter string)
+  (check-type end-delimiter string)
+  (when (or (string= start-delimiter "")
+            (string= end-delimiter ""))
+      (error (make-condition 'simple-type-error
+              :format-control "Delimiters can't be empty strings")))
   (let ((start-len (length start-delimiter))
-        (end-len (length end-delimiter)))
+        (end-len (length end-delimiter))
+        (test (if ignore-case
+                  #'string-equal
+                  #'string=)))
+
     (lambda (string values)
       (check-type string string)
-      (when (and (not (listp values))
-                 (not (hash-table-p values)))
-            (error (make-condition 'type-error)))
+      (unless (listp values)
+        (error (make-condition 'type-error)))
 
       (with-output-to-string (stream)
         (loop for prev = 0 then (+ j end-len)
@@ -332,13 +341,10 @@
               for j = (search end-delimiter string :start2 i)
                       then (search end-delimiter string :start2 i)
               while j
-
           do (princ (subseq string prev i) stream)
              (let ((instance (rest (assoc (subseq string (+ i start-len) j)
                                           values
-                                          :test (if ignore-case
-                                                    #'string-equal
-                                                    #'string=)))))
+                                          :test test))))
                (if instance
                 (princ instance stream)
                 (princ (subseq string i (+ j end-len)) stream)))
