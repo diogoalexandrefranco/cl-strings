@@ -46,6 +46,13 @@ format-number returns a string from a number. It's possible to set the precision
 ```lisp
 (format-number 1234.326 :precision 2 :decimal-separator "," :order-separator " ") ;; "1 234,33"
 ```
+
+#### (template-parser start-delimiter end-delimiter type)
+```lisp
+(defvar *my-parser* (template-parser "{{" "}}")) ;; function
+(funcall *my-parser* "Hello {{name}}!" '(("name" . "Sam"))) ;; "hello Sam!"
+```
+
 #### (starts-with string target &key (ignore-case nil))
 starts-with checks if *string* starts with *target*. The key argument *ignore-case* defaults to nil.
 ```lisp

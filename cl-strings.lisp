@@ -311,3 +311,36 @@
                             delimiter
                             (string delimiter))
                         "-")))
+
+(defun template-parser (start-delimiter end-delimiter &key (ignore-case nil))
+  "Returns a closure than can substitute variables
+  delimited by \"start-delimiter\" and \"end-delimiter\"
+  in a string, but the provided values."
+  (let ((start-len (length start-delimiter))
+        (end-len (length end-delimiter)))
+    (lambda (string values)
+      (check-type string string)
+      (when (and (not (listp values))
+                 (not (hash-table-p values)))
+            (error (make-condition 'type-error)))
+
+      (with-output-to-string (stream)
+        (loop for prev = 0 then (+ j end-len)
+              for i = (search start-delimiter string)
+                      then (search start-delimiter string :start2 j)
+              while i
+              for j = (search end-delimiter string :start2 i)
+                      then (search end-delimiter string :start2 i)
+              while j
+
+          do (princ (subseq string prev i) stream)
+             (let ((instance (rest (assoc (subseq string (+ i start-len) j)
+                                          values
+                                          :test (if ignore-case
+                                                    #'string-equal
+                                                    #'string=)))))
+               (if instance
+                (princ instance stream)
+                (princ (subseq string i (+ j end-len)) stream)))
+
+          finally (princ (subseq string prev) stream))))))

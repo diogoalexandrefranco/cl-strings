@@ -1,6 +1,6 @@
 (in-package :cl-strings)
 
-(prove:plan 18)
+(prove:plan 19)
 
 (prove:subtest "ends-with"
   (prove:ok (ends-with "1" "1" :ignore-case t) "equal strings")
@@ -253,5 +253,12 @@
   (prove:is (kebab-case "THE man BIT the DOG") "the-man-bit-the-dog" "Uppercase in the string")
   (prove:is-error (kebab-case 893) 'simple-type-error "First arg not a string")
   (prove:is-error (kebab-case "The man bit the dog" :delimiter 21) 'type-error "Second arg not a string"))
+
+(prove:subtest "template-parser"
+  (prove:is (funcall (template-parser "{{" "}}")
+                      "Hello {{name}}, welcome to {{website}}!"
+                      '(("name" . "Sam") ("website" . "cl-strings")))
+            "Hello Sam, welcome to cl-strings!"
+            "Normal case"))
 
 (prove:finalize)
