@@ -307,6 +307,22 @@
                             (string delimiter))
                         "-")))
 
+(defun title-case (string &key (remove-hyphens t))
+  "Returns a string with the first letter of every word
+  upcased, and the other ones downcased."
+  (check-type string string)
+  (let* ((clean (if remove-hyphens (replace-all string "-" " ") string))
+         (words (split (string-trim *blank-chars* clean) #\space)))
+    (with-output-to-string (stream)
+      (unless (= (length (first words)) 0)
+        (write-char (char-upcase (char (first words) 0)) stream)
+        (write-string (string-downcase (subseq (first words) 1)) stream))
+      (loop for word in (rest words) do
+        (unless (= (length (first words)) 0)
+          (write-char #\space stream)
+          (write-char (char-upcase (char word 0)) stream)
+          (write-string (string-downcase (subseq word 1)) stream))))))
+
 (defun make-template-parser (start-delimiter end-delimiter &key (ignore-case nil))
   "Returns a closure than can substitute variables
   delimited by \"start-delimiter\" and \"end-delimiter\"

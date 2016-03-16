@@ -23,4 +23,5 @@
     #:camel-case
     #:snake-case
     #:kebab-case
+    #:title-case
     #:make-template-parser))

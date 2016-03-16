@@ -1,6 +1,6 @@
 (in-package :cl-strings)
 
-(prove:plan 19)
+(prove:plan 20)
 
 (prove:subtest "ends-with"
   (prove:ok (ends-with "1" "1" :ignore-case t) "equal strings")
@@ -8,7 +8,8 @@
   (prove:ok (not (ends-with "123" "12" :ignore-case t)) "different strings")
   (prove:ok (ends-with "123" "123" :ignore-case nil) "equal strings")
   (prove:ok (ends-with "123A" "123a" :ignore-case t) "equal strings ignoring case")
-  (prove:ok (not (ends-with "123A" "123a" :ignore-case nil)) "different strings not ignoring case")
+  (prove:ok (not (ends-with "123A" "123a" :ignore-case nil))
+    "different strings not ignoring case")
   (prove:ok (ends-with "123A" "123A" :ignore-case nil) "equal strings")
   (prove:ok (not (ends-with "123A" "123a")) "default to not ignore case")
   (prove:ok (ends-with "abcd" "") "empty target")
@@ -20,11 +21,14 @@
 
 (prove:subtest "starts-with"
   (prove:ok (starts-with "1" "1" :ignore-case t) "equal strings")
-  (prove:ok (not (starts-with "1" "12" :ignore-case t)) "target lengthier than string")
+  (prove:ok (not (starts-with "1" "12" :ignore-case t))
+    "target lengthier than string")
   (prove:ok (starts-with "123" "12" :ignore-case t) "does start with target")
   (prove:ok (starts-with "123" "123" :ignore-case nil) "equal strings")
-  (prove:ok (starts-with "a123A" "A123" :ignore-case t) "starts with if ignoring case")
-  (prove:ok (not (starts-with "123A" "123a" :ignore-case nil)) "doesn't start with if not ignoring case")
+  (prove:ok (starts-with "a123A" "A123" :ignore-case t)
+    "starts with if ignoring case")
+  (prove:ok (not (starts-with "123A" "123a" :ignore-case nil))
+    "doesn't start with if not ignoring case")
   (prove:ok (starts-with "123A" "123A" :ignore-case nil) "equal strings")
   (prove:ok (not (starts-with "123A" "123a")) "default to not ignore case")
   (prove:ok (starts-with "abcd" "") "empty target")
@@ -40,15 +44,20 @@
   (prove:is (shorten "123456789" 9) "123456789" "same length")
   (prove:is (shorten "123456789" 15) "123456789" "smaller length")
   (prove:is (shorten "123456789" 0) "..." "0 length")
-  (prove:is (shorten "123456789" 5 :truncate-string ", etc.") "12345, etc." "different truncate-string")
-  (prove:is (shorten "123456789" 5 :truncate-string nil) "12345" "truncate-string nil")
-  (prove:is (shorten "123456789" 5 :truncate-string "") "12345" "truncate-string empty")
-  (prove:is (shorten "123456789" 0 :truncate-string "") "" "truncate-string empty and no length"))
+  (prove:is (shorten "123456789" 5 :truncate-string ", etc.") "12345, etc."
+    "different truncate-string")
+  (prove:is (shorten "123456789" 5 :truncate-string nil) "12345"
+    "truncate-string nil")
+  (prove:is (shorten "123456789" 5 :truncate-string "") "12345"
+    "truncate-string empty")
+  (prove:is (shorten "123456789" 0 :truncate-string "") ""
+    "truncate-string empty and no length"))
 
 (prove:subtest "repeat"
   (prove:is (repeat "123" 2) "123123" "normal correct case")
   (prove:is (repeat "123" 2 :separator "") "123123" "using :separator")
-  (prove:is (repeat "12345" 4 :separator ", ") "12345, 12345, 12345, 12345" "with custom :separator")
+  (prove:is (repeat "12345" 4 :separator ", ") "12345, 12345, 12345, 12345"
+    "with custom :separator")
   (prove:is (repeat "123456789" 0) "" "0 repeats")
   (prove:is-error (repeat "123456789" nil) 'type-error "nil repeats")
   (prove:is (repeat "" 10) "" "empty string")
@@ -56,11 +65,14 @@
 
 (prove:subtest "join"
   (prove:is (join (list "ab" "cd" "ef")) "abcdef" "normal case")
-  (prove:is (join (list "ab" "cd" "ef") :separator "") "abcdef" "normal case with delimiter")
-  (prove:is-error (join (list "ab" "cd" "ef") :separator nil) 'type-error "nil separator")
+  (prove:is (join (list "ab" "cd" "ef") :separator "") "abcdef"
+    "normal case with delimiter")
+  (prove:is-error (join (list "ab" "cd" "ef") :separator nil) 'type-error
+    "nil separator")
   (prove:is (join (list "ab") :separator ", ") "ab" "just one element")
   (prove:is (join nil :separator ", ") "" "null list")
-  (prove:is (join (list "ab" "cd" "ef") :separator ", ") "ab, cd, ef" "normal case with delimiter"))
+  (prove:is (join (list "ab" "cd" "ef") :separator ", ") "ab, cd, ef"
+    "normal case with delimiter"))
 
 (prove:subtest "replace-all"
   (prove:is (replace-all "the man bit the dog" "man" "snake")
@@ -152,8 +164,8 @@
   (prove:is-error (format-number "3419") 'type-error "Number must be a number")
   (prove:is-error (format-number 3419.25 :precision -3) 'simple-error
     "Precision must be 0 or higher")
-  (prove:is-error (format-number 3419.25 :precision 3 :order-separator 4) 'simple-error
-    "Separators must be a char or a string"))
+  (prove:is-error (format-number 3419.25 :precision 3 :order-separator 4)
+    'simple-error "Separators must be a char or a string"))
 
 (prove:subtest "parse-number"
   (prove:ok (= (parse-number "0") 0) "Zero")
@@ -230,9 +242,11 @@
   (prove:is (camel-case "the") "the" "Only one word lowercase")
   (prove:is (camel-case "the ") "the" "Only one word and space")
   (prove:is (camel-case " the") "the" "One space followed by a word")
-  (prove:is (camel-case "The man bit the dog") "TheManBitTheDog" "Already an uppercase letter")
+  (prove:is (camel-case "The man bit the dog") "TheManBitTheDog"
+    "Already an uppercase letter")
   (prove:is (camel-case "893") "893" "String starting with numericals char")
-  (prove:is (camel-case "The man bit the dog" :delimiter "e ") "ThMan bit thDog" "With a specified delimiter")
+  (prove:is (camel-case "The man bit the dog" :delimiter "e ") "ThMan bit thDog"
+    "With a specified delimiter")
   (prove:is-error (camel-case 893) 'type-error "Not a string")
   (prove:is-error (camel-case "11" :delimiter 21) 'simple-type-error "Not a string"))
 
@@ -242,17 +256,31 @@
   (prove:is (snake-case "the") "the" "Only on word")
   (prove:is (snake-case " the") "the" "Leading white space")
   (prove:is (snake-case "the ") "the" "Trailing white space")
-  (prove:is (snake-case "The man bit The dog" :delimiter "e ") "Th_man bit th_dog" "Replacing more than one char")
+  (prove:is (snake-case "The man bit The dog" :delimiter "e ") "Th_man bit th_dog"
+    "Replacing more than one char")
   (prove:is-error (snake-case 893) 'type-error "First arg not a string")
-  (prove:is-error (snake-case "The man bit the dog" :delimiter 21) 'type-error "Second arg not a string"))
+  (prove:is-error (snake-case "The man bit the dog" :delimiter 21) 'type-error
+    "Second arg not a string"))
 
 (prove:subtest "kebab-case"
   (prove:is (kebab-case "the man bit the dog") "the-man-bit-the-dog" "Simple case")
   (prove:is (kebab-case "") "" "Empty string")
-  (prove:is (kebab-case "The man bit the dog" :delimiter "e ") "th-man bit th-dog" "Replacing more than one char")
-  (prove:is (kebab-case "THE man BIT the DOG") "the-man-bit-the-dog" "Uppercase in the string")
+  (prove:is (kebab-case "The man bit the dog" :delimiter "e ") "th-man bit th-dog"
+    "Replacing more than one char")
+  (prove:is (kebab-case "THE man BIT the DOG") "the-man-bit-the-dog"
+    "Uppercase in the string")
   (prove:is-error (kebab-case 893) 'type-error "First arg not a string")
-  (prove:is-error (kebab-case "The man bit the dog" :delimiter 21) 'type-error "Second arg not a string"))
+  (prove:is-error (kebab-case "The man bit the dog" :delimiter 21) 'type-error
+    "Second arg not a string"))
+
+(prove:subtest "title-case"
+  (prove:is (title-case "the man bit the dog") "The Man Bit The Dog" "Simple case")
+  (prove:is (title-case "") "" "Empty string")
+  (prove:is (title-case "The man-bit-the dog" :remove-hyphens nil)
+    "The Man-bit-the Dog" "Keeyping hyphens")
+  (prove:is (title-case "THE-man-BIT the-DOG") "The Man Bit The Dog"
+    "Uppercase in the string and removing hyphens")
+  (prove:is-error (title-case 893) 'type-error "First arg not a string"))
 
 (prove:subtest "make-template-parser"
   (prove:is (funcall (make-template-parser "{{" "}}")
@@ -305,5 +333,5 @@
   (prove:is-error (funcall (make-template-parser "{{" "}}")
                      45 '(("name" . "Sam") ("website" . "cl-strings")))
             'type-error "Bad type on string"))
-            
+
 (prove:finalize)
