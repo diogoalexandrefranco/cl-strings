@@ -13,9 +13,7 @@ It has 100% test coverage and works at least on sbcl, ecl, ccl and abcl.
 This section assumes you use quicklisp. If you don't, you should! Download and
 learn about it [here](https://www.quicklisp.org/beta/).
 
-While this library is not tracked by quicklisp, you can simply download the
-source code to your *local-projects* folder inside the quicklisp directory.
-Then simply:  
+Once you have quicklisp loaded, simply do:  
 ```lisp
 (ql:quickload :cl-strings)
 ```
