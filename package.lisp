@@ -2,7 +2,6 @@
 
 (defpackage :cl-strings
   (:use :common-lisp)
-  (:nicknames :s)
   (:shadow)
   (:export
     #:starts-with

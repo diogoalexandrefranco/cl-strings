@@ -24,7 +24,6 @@ And it's all up and running. To run the tests do:
 Please report if any tests fail in your Common Lisp implementation.
 
 ## Example
-To ease typing, the cl-strings package also has the nickname "s".
 ```lisp
 > (ql:quickload :cl-strings)
 (:CL-STRINGS)  
