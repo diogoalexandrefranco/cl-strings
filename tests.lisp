@@ -162,10 +162,10 @@
   (prove:is (format-number 3419.26 :precision 1 :order-separator ".") "3.419.3"
     "Custom order separator as string")
   (prove:is-error (format-number "3419") 'type-error "Number must be a number")
-  (prove:is-error (format-number 3419.25 :precision -3) 'simple-error
+  (prove:is-error (format-number 3419.25 :precision -3) 'type-error
     "Precision must be 0 or higher")
   (prove:is-error (format-number 3419.25 :precision 3 :order-separator 4)
-    'simple-error "Separators must be a char or a string"))
+    'type-error "Separators must be a char or a string"))
 
 (prove:subtest "parse-number"
   (prove:ok (= (parse-number "0") 0) "Zero")

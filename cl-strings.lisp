@@ -107,7 +107,7 @@
             ((string= separator "") (chars string))
             ((typep separator 'string)
              (%split-by-str string separator))
-            (t (error (make-condition 'type-error :datum separator :expected-type 'string))))))
+            (t (error 'type-error :datum separator :expected-type 'string)))))
 
 (defun chop (string step)
   "Returns a list with parts of \"string\", each with
@@ -137,10 +137,12 @@
 (defun format-number (number &key (precision 0) (decimal-separator ".") (order-separator ","))
   "Converts a number to a string, with \"precision\" number of digits."
   (check-type number number)
-  (if (< precision 0) (error "Precision should be 0 or higher."))
+  (if (< precision 0)
+      (error 'simple-type-error :format-control "Precision should be 0 or higher."))
   (unless (and (or (stringp decimal-separator) (characterp decimal-separator))
                (or (stringp order-separator) (characterp order-separator)))
-      (error "decimal-separator and order-separator should both be characters or strings."))
+      (error 'simple-type-error :format-control
+        "decimal-separator and order-separator should both be characters or strings."))
 
   (let* ((float-formatted (format nil "~,vF" precision number))
          (decimal-part (subseq float-formatted (- (length float-formatted) precision)))
@@ -161,7 +163,7 @@
 (defun parse-number (number-str &key (decimal-separator #\.) (order-separator nil))
   "Parses number-str without using the reader, returning the equivalent number"
   (check-type number-str string)
-  (if (string= number-str "") (error (make-condition 'parse-error)))
+  (if (string= number-str "") (error 'parse-error))
   (labels ((%clean-order-separators (number-str &optional order-separator)
               (if (stringp order-separator)
                 (setf order-separator (char order-separator 0)))
@@ -171,8 +173,8 @@
                         (if (or (char= order-separator c))
                             (return-from %clean-order-separators
                               (%clean-order-separators (remove c number-str) c))
-                            (error (make-condition 'parse-error)))
-                        (error (make-condition 'parse-error)))))
+                            (error 'parse-error))
+                        (error 'parse-error))))
               number-str)
            (%parse-int (number-str)
             (if (string= number-str "")
@@ -184,7 +186,7 @@
               (float (+ int-part-nr (/ decimal-part-nr (expt 10 (length decimal-part)))))))
            (%parse-exp (coeff-str exponent-str coeff-separator)
             (when (or (string= coeff-str "") (string= exponent-str ""))
-                  (error (make-condition 'parse-error)))
+                  (error 'parse-error))
             (let ((exponent-part (if (char= (char exponent-str 0) #\-)
                                      (expt 10 (* -1 (%parse-int (subseq exponent-str 1))))
                                      (expt 10 (%parse-int exponent-str)))))
@@ -215,7 +217,7 @@
                                  (subseq number-str (1+ divisor-pos))))
                     ((and (not separator-pos) (not exponential-pos) (not divisor-pos))
                      (%parse-int number-str))
-                    (t (error (make-condition 'parse-error)))))))
+                    (t (error 'parse-error))))))
 
     (if (char= (char number-str 0) #\-)
         (* -1 (%parse-positive (subseq number-str 1) decimal-separator))
@@ -255,8 +257,7 @@
   (check-type string string)
   (check-type position number)
   (when (not (<= 0 position (length original)))
-    (error (make-condition 'simple-type-error :format-control
-            "position out of bounds.")))
+    (error 'simple-type-error :format-control "Position out of bounds."))
 
   (concatenate 'string (subseq original 0 position)
                        string
@@ -268,7 +269,8 @@
   except for the first word of the string."
   (check-type string string)
   (unless (or (characterp delimiter) (stringp delimiter))
-    (error (make-condition 'simple-type-error)))
+    (error 'simple-type-error
+           :format-control "delimiter should be a character or a string."))
   (let ((words (split (string-trim *blank-chars* string) delimiter)))
     (with-output-to-string (stream)
       (unless (= (length (first words)) 0)
@@ -284,7 +286,8 @@
   replaced by an underscore, and downcased, except for the first letter."
   (check-type string string)
   (unless (or (characterp delimiter) (stringp delimiter))
-    (error (make-condition 'simple-type-error)))
+    (error 'simple-type-error
+           :format-control "delimiter should be a character or a string."))
   (let ((words (split (string-trim *blank-chars* string) delimiter)))
     (with-output-to-string (stream)
       (unless (= (length (first words)) 0)
@@ -300,7 +303,8 @@
   replaced by an hyphen, and every character lower cased."
   (check-type string string)
   (unless (or (characterp delimiter) (stringp delimiter))
-    (error (make-condition 'simple-type-error)))
+    (error 'simple-type-error
+           :format-control "delimiter should be a character or a string."))
   (string-downcase
     (replace-all string (if (stringp delimiter)
                             delimiter
@@ -326,13 +330,13 @@
 (defun make-template-parser (start-delimiter end-delimiter &key (ignore-case nil))
   "Returns a closure than can substitute variables
   delimited by \"start-delimiter\" and \"end-delimiter\"
-  in a string, but the provided values."
+  in a string, by the provided values."
   (check-type start-delimiter string)
   (check-type end-delimiter string)
   (when (or (string= start-delimiter "")
             (string= end-delimiter ""))
-      (error (make-condition 'simple-type-error
-              :format-control "Delimiters can't be empty strings")))
+      (error 'simple-type-error
+              :format-control "The empty string is not a valid delimiter."))
   (let ((start-len (length start-delimiter))
         (end-len (length end-delimiter))
         (test (if ignore-case
@@ -342,7 +346,8 @@
     (lambda (string values)
       (check-type string string)
       (unless (listp values)
-        (error (make-condition 'type-error)))
+        (error 'simple-type-error
+               :format-control "values should be an association list"))
 
       (with-output-to-string (stream)
         (loop for prev = 0 then (+ j end-len)
