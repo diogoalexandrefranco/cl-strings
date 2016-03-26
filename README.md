@@ -1,7 +1,7 @@
 # cl-strings
-cl-strings is a small, portable, dependency-free set of utilities to ease string
-manipulation in Common Lisp.  
-It has 100% test coverage and works at least on sbcl, ecl, ccl and abcl.
+cl-strings is a small, portable, dependency-free set of utilities that making it
+even easier to manipulate text in Common Lisp.  
+It has 100% test coverage and works at least on sbcl, ecl, ccl, abcl and clisp.
 
 * [How do i use it?](#how-do-i-use-it)
 * [Example](#example)
@@ -94,7 +94,7 @@ shorten returns a string consisting of *string* cut off to length *len*, and
 then *truncate-string* (which defaults to "..." but can be nil or "") appended
 to it.
 ```lisp
-(shorten "and then the man bit the dog!" 8) ;; "and then..."
+(shorten "and then the guy bit the dog!" 8) ;; "and then..."
 ```
 
 #### (replace-all string part replacement &key (ignore-case nil))

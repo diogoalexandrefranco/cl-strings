@@ -353,16 +353,15 @@
         (loop for prev = 0 then (+ j end-len)
               for i = (search start-delimiter string)
                       then (search start-delimiter string :start2 j)
-              while i
-              for j = (search end-delimiter string :start2 i)
-                      then (search end-delimiter string :start2 i)
-              while j
-          do (princ (subseq string prev i) stream)
+              for j = (if i (search end-delimiter string :start2 i))
+                      then (if i (search end-delimiter string :start2 i))
+          do (when (or (not i) (not j))
+                   (write-string (subseq string prev) stream)
+                   (return))
+             (write-string (subseq string prev i) stream)
              (let ((instance (rest (assoc (subseq string (+ i start-len) j)
                                           values
                                           :test test))))
                (if instance
                 (princ instance stream)
-                (princ (subseq string i (+ j end-len)) stream)))
-
-          finally (princ (subseq string prev) stream))))))
+                (write-string (subseq string i (+ j end-len)) stream))))))))
