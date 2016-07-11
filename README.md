@@ -84,7 +84,7 @@ defaults to nil.
 
 #### (clean-diacritics string)
 clean-diacritics returns a string with the diacritical characters replaced by
-their closes counterparts.
+their closest counterparts.
 ```list
 (clean-diacritics "Déjà vu") ;; "Deja vu"
 ```
