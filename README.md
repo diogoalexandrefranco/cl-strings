@@ -1,5 +1,5 @@
 # cl-strings
-cl-strings is a small, portable, dependency-free set of utilities that making it
+cl-strings is a small, portable, dependency-free set of utilities that make it
 even easier to manipulate text in Common Lisp.  
 It has 100% test coverage and works at least on sbcl, ecl, ccl, abcl and clisp.
 
@@ -84,7 +84,7 @@ defaults to nil.
 
 #### (clean-diacritics string)
 clean-diacritics returns a string with the diacritical characters replaced by
-their closes counterparts.
+their closest counterparts.
 ```list
 (clean-diacritics "Déjà vu") ;; "Deja vu"
 ```
