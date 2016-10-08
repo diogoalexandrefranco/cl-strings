@@ -174,6 +174,7 @@
   (prove:ok (= (parse-number "-10.9") -10.9) "Negative and decimal")
   (prove:ok (= (parse-number "-10,9" :decimal-separator #\,) -10.9)
     "Custom char separator")
+  (prove:ok (= (parse-number "+2332") 2332) "Positive sign in front")
   (prove:ok (= (parse-number "-13,92" :decimal-separator ",") -13.92)
     "Custom string separator")
   (prove:ok (= (parse-number "1 234 456" :order-separator " ") 1234456)

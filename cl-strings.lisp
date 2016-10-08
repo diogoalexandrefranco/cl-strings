@@ -219,9 +219,13 @@
                      (%parse-int number-str))
                     (t (error 'parse-error))))))
 
-    (if (char= (char number-str 0) #\-)
-        (* -1 (%parse-positive (subseq number-str 1) decimal-separator))
-        (%parse-positive number-str decimal-separator))))
+    (let ((first-char (char number-str 0)))
+      (cond ((char= first-char #\-)
+             (* -1 (%parse-positive (subseq number-str 1) decimal-separator)))
+            ((char= first-char #\+)
+             (%parse-positive (subseq number-str 1) decimal-separator))
+            (t
+              (%parse-positive number-str decimal-separator))))))
 
 (defun clean-diacritics (string)
   "Returns a string with the diacritics replaced by their closest ASCII equivalents"
