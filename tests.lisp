@@ -91,7 +91,7 @@
 (prove:subtest "chars"
   (prove:is (chars "foo bar") (list #\f #\o #\o #\SPACE #\b #\a #\r) "standard chars")
   (prove:is (chars "") nil "empty string")
-  (prove:is-error (chars 32) 'type-error))
+  (prove:is-error (chars 32) 'type-error "Test type error"))
 
 (prove:subtest "split"
   (prove:is (split "crazy foo bar") (list "crazy" "foo" "bar")
@@ -131,7 +131,7 @@
   "Chop by zero")
  (prove:is (chop "foo bar" -8) (list "foo bar")
   "Chop by negative number")
- (prove:is-error (chop 34 3) 'type-error))
+ (prove:is-error (chop 34 3) 'type-error "Test type error"))
 
 (prove:subtest "toggle-case"
   (prove:is (toggle-case "This Stuff Is Crazy") "tHIS sTUFF iS cRAZY"
@@ -161,6 +161,12 @@
     "Custom order separator as char")
   (prove:is (format-number 3419.26 :precision 1 :order-separator ".") "3.419.3"
     "Custom order separator as string")
+  (prove:is (format-number 212322.4473d0 :precision 4 :order-separator ",")
+    "212,322.4473" "Right precision with big decimal number")
+  (prove:is (format-number 22321.4 :precision 4 :order-separator "")
+    "22321.4000" "Empty order separator")
+  (prove:is (format-number 22321.4 :precision 4 :order-separator nil)
+    "22321.4000" "Null order separator")
   (prove:is-error (format-number "3419") 'type-error "Number must be a number")
   (prove:is-error (format-number 3419.25 :precision -3) 'type-error
     "Precision must be 0 or higher")

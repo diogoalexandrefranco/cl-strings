@@ -140,7 +140,7 @@
   (if (< precision 0)
       (error 'simple-type-error :format-control "Precision should be 0 or higher."))
   (unless (and (or (stringp decimal-separator) (characterp decimal-separator))
-               (or (stringp order-separator) (characterp order-separator)))
+               (or (stringp order-separator) (characterp order-separator) (null order-separator)))
       (error 'simple-type-error :format-control
         "decimal-separator and order-separator should both be characters or strings."))
 
@@ -148,11 +148,13 @@
          (decimal-part (subseq float-formatted (- (length float-formatted) precision)))
          (integer-formatted (parse-integer
                               (subseq float-formatted 0 (1- (- (length float-formatted) precision)))))
-         (integer-part (format nil "~0,'0,v,3:D"
+         (integer-part (if (or (null order-separator) (string= order-separator ""))
+                           (format nil "~a" integer-formatted)
+                           (format nil "~0,'0,v,3:D"
                                    (if (characterp order-separator)
                                        order-separator
                                        (char order-separator 0))
-                                   integer-formatted)))
+                                   integer-formatted))))
     (if (> precision 0)
         (concatenate 'string integer-part (if (characterp decimal-separator)
                                               (string decimal-separator)
