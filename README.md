@@ -68,15 +68,15 @@ returned lambda is **(string values)** where *string* is the template and
 (funcall *my-parser* "Hello {{name}}!" '(("name" . "Sam"))) ;; "Hello Sam!"
 ```
 
-#### (starts-with string target &key (ignore-case nil))
-starts-with checks if *string* starts with *target*. The key argument
+#### (starts-with string prefix &key (ignore-case nil))
+starts-with checks if *string* starts with *prefix*. The key argument
 *ignore-case* defaults to nil.
 ```lisp
 (starts-with "fOo bar" "foo" :ignore-case t) ;; t
 ```
 
-#### (ends-with string target &key (ignore-case nil))
-ends-with checks if *string* ends with *target*. The key argument *ignore-case*
+#### (ends-with string suffix &key (ignore-case nil))
+ends-with checks if *string* ends with *suffix*. The key argument *ignore-case*
 defaults to nil.
 ```lisp
 (ends-with "fOo bar" "bAr" :ignore-case t) ;; t
