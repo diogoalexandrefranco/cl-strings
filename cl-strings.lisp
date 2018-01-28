@@ -3,21 +3,21 @@
 (defvar *blank-chars* '(#\Space #\Newline #\Backspace #\Tab
                         #\Linefeed #\Page #\Return #\Rubout))
 
-(defun starts-with (string target &key (ignore-case nil))
-  "Returns true if \"string\"'s first characters are equal to \"target\"."
-  (let ((target-len (length target))
+(defun starts-with (string prefix &key (ignore-case nil))
+  "Returns true if \"string\"'s first characters are equal to \"prefix\"."
+  (let ((prefix-len (length prefix))
         (string-len (length string)))
-    (when (>= string-len target-len)
+    (when (>= string-len prefix-len)
       (funcall (if ignore-case #'string-equal #'string=)
-               string target :start1 0 :end1 target-len))))
+               string prefix :start1 0 :end1 prefix-len))))
 
-(defun ends-with (string target &key (ignore-case nil))
-  "Returns true if \"string\"'s last characters are equal to \"target\"."
-  (let ((target-len (length target))
+(defun ends-with (string suffix &key (ignore-case nil))
+  "Returns true if \"string\"'s last characters are equal to \"suffix\"."
+  (let ((suffix-len (length suffix))
         (string-len (length string)))
-    (when (>= string-len target-len)
+    (when (>= string-len suffix-len)
       (funcall (if ignore-case #'string-equal #'string=)
-               string target :start1 (- string-len target-len)))))
+               string suffix :start1 (- string-len suffix-len)))))
 
 (defun shorten (string len &key (truncate-string "..."))
   "If \"string\"'s length is bigger than \"length\", cut the last
