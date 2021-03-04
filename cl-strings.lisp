@@ -231,8 +231,8 @@
 
 (defun clean-diacritics (string)
   "Returns a string with the diacritics replaced by their closest ASCII equivalents"
-  (let ((from "ąàáäâãåæăćčĉęèéëêĝĥìíïîĵłľńňòóöőôõðøśșşšŝťțţŭùúüűûñÿýçżźžĄÀÁÄÂÃÅÆĂĆČĈĘÈÉËÊĜĤÌÍÏÎĴŁĽŃŇÒÓÖŐÔÕÐØŚȘŞŠŜŤȚŢŬÙÚÜŰÛÑŸÝÇŻŹŽ")
-        (to "aaaaaaaaaccceeeeeghiiiijllnnoooooooossssstttuuuuuunyyczzzAAAAAAAAACCCEEEEEGHIIIIJLLNNOOOOOOOOSSSSSTTTUUUUUUNYYCZZZ"))
+  (let ((from "ąàáäâãåæăćčĉęèéëêěĝĥìíïîĵłľńňñòóöőôõðøřśșşšŝťțţŭùúüűûůñÿýçżźžĄÀÁÄÂÃÅÆĂĆČĈĘÈÉËÊĚĜĤÌÍÏÎĴŁĽŃŇÑÒÓÖŐÔÕÐØŘŚȘŞŠŜŤȚŢŬÙÚÜŰÛŮÑŸÝÇŻŹŽ")
+        (to "aaaaaaaaaccceeeeeeghiiiijllnnnoooooooorssssstttuuuuuuunyyczzzAAAAAAAAACCCEEEEEEGHIIIIJLLNNNOOOOOOOORSSSSSTTTUUUUUUUNYYCZZZ"))
     (map 'string #'(lambda (x)
                     (let ((pos (position x from)))
                       (if pos
