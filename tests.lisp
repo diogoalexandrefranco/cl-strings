@@ -16,7 +16,7 @@
   (prove:ok (not (ends-with "" "abcd")) "empty string")
   (prove:ok (ends-with "" "") "both empty")
   (prove:ok (not (ends-with "" nil)) "nil suffix")
-  (prove:ok (not (ends-with "" nil)) "nil string")
+  (prove:ok (not (ends-with nil "")) "nil string")
   (prove:is-error (ends-with 3 3) 'type-error "Not strings"))
 
 (prove:subtest "starts-with"
@@ -35,7 +35,7 @@
   (prove:ok (not (starts-with "" "abcd")) "empty string")
   (prove:ok (starts-with "" "") "both empty")
   (prove:ok (not (starts-with "" nil)) "nil prefix")
-  (prove:ok (not (starts-with "" nil)) "nil string")
+  (prove:ok (not (starts-with nil "")) "nil string")
   (prove:is-error (starts-with 3 3) 'type-error "Not strings"))
 
 (prove:subtest "shorten"
