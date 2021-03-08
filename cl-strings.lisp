@@ -1,3 +1,5 @@
+;;; -*- mode: lisp; encoding: (utf-8) -*-
+
 (in-package :cl-strings)
 
 (defvar *blank-chars* '(#\Space #\Newline #\Backspace #\Tab
